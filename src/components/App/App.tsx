@@ -4,7 +4,6 @@ import { Routes, Route } from "react-router-dom";
 import type { Recipe } from "../../types";
 import { allRecipes } from "../../data/recipes";
 import AppLayout from "../AppLayout/AppLayout";
-import { useFavorites } from "../../contexts/FavoritesContext";
 import HomePage from "../../pages/HomePage";
 import FavoritesPage from "../../pages/FavoritesPage";
 import RecipePage from "../../pages/RecipePage";
@@ -13,7 +12,6 @@ import NotFoundPage from "../../pages/NotFoundPage";
 import "./App.css";
 
 function App() {
-  const { favorites, onToggleFavorite: handleToggleFavorite } = useFavorites();
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -35,21 +33,13 @@ function App() {
         <Route
           path="/"
           element={
-            <HomePage
-              recipes={recipes}
-              favorites={favorites}
-              onToggleFavorite={handleToggleFavorite}
-            />
+            <HomePage recipes={recipes} />
           }
         />
         <Route
           path="/favorites"
           element={
-            <FavoritesPage
-              recipes={recipes}
-              favorites={favorites}
-              onToggleFavorite={handleToggleFavorite}
-            />
+            <FavoritesPage recipes={recipes} />
           }
         />
         <Route path="/recipes/:id" element={<RecipePage recipes={recipes} />} />

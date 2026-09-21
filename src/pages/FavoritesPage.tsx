@@ -1,13 +1,13 @@
 import type { Recipe } from "../types";
 import RecipeList from "../components/RecipeList/RecipeList";
+import { useFavorites } from "../contexts/FavoritesContext";
 
 type Props = {
   recipes: Recipe[];
-  favorites: Set<string>;
-  onToggleFavorite: (id: string) => void;
 };
 
-function FavoritesPage({ recipes, favorites, onToggleFavorite }: Props) {
+function FavoritesPage({ recipes }: Props) {
+  const { favorites } = useFavorites();
   const favoritedRecipes = recipes.filter((recipe) => favorites.has(recipe.id));
 
   return (
@@ -16,11 +16,7 @@ function FavoritesPage({ recipes, favorites, onToggleFavorite }: Props) {
       {favoritedRecipes.length === 0 ? (
         <p>No favorites yet</p>
       ) : (
-        <RecipeList
-          recipes={favoritedRecipes}
-          favorites={favorites}
-          onToggleFavorite={onToggleFavorite}
-        />
+        <RecipeList recipes={favoritedRecipes} />
       )}
     </div>
   );

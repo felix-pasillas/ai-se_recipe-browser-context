@@ -5,11 +5,9 @@ import RecipeList from "../components/RecipeList/RecipeList";
 
 type Props = {
   recipes: Recipe[];
-  favorites: Set<string>;
-  onToggleFavorite: (id: string) => void;
 };
 
-function HomePage({ recipes, favorites, onToggleFavorite }: Props) {
+function HomePage({ recipes }: Props) {
   const [query, setQuery] = useState("");
 
   const filteredRecipes = recipes.filter((recipe) =>
@@ -26,11 +24,7 @@ function HomePage({ recipes, favorites, onToggleFavorite }: Props) {
         onChange={(e) => setQuery(e.target.value)}
       />
       <h1 className="app__heading">Recipes</h1>
-      <RecipeList
-        recipes={filteredRecipes}
-        favorites={favorites}
-        onToggleFavorite={onToggleFavorite}
-      />
+      <RecipeList recipes={filteredRecipes} />
     </div>
   );
 }

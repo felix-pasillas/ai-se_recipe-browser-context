@@ -2,6 +2,7 @@ import { useNavigate } from "react-router";
 
 import type { Recipe } from "../../types";
 import { categoryColors } from "../../data/recipes";
+import { useFavorites } from "../../contexts/FavoritesContext";
 import "./RecipeCard.css";
 
 import heartIcon from "../../assets/heart.svg";
@@ -9,12 +10,12 @@ import heartFilledIcon from "../../assets/heart-filled.svg";
 
 type Props = {
   recipe: Recipe;
-  isFavorited: boolean;
-  onToggleFavorite: (id: string) => void;
 };
 
-function RecipeCard({ recipe, onToggleFavorite, isFavorited }: Props) {
+function RecipeCard({ recipe }: Props) {
   const navigate = useNavigate();
+  const { favorites, onToggleFavorite } = useFavorites();
+  const isFavorited = favorites.has(recipe.id);
 
   return (
     <article className="recipe-card">
