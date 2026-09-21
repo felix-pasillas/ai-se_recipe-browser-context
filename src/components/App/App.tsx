@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import type { Recipe } from "../../types";
 import { allRecipes } from "../../data/recipes";
 import AppLayout from "../AppLayout/AppLayout";
+import { useFavorites } from "../../contexts/FavoritesContext";
 import HomePage from "../../pages/HomePage";
 import FavoritesPage from "../../pages/FavoritesPage";
 import RecipePage from "../../pages/RecipePage";
@@ -12,17 +13,9 @@ import NotFoundPage from "../../pages/NotFoundPage";
 import "./App.css";
 
 function App() {
-  const [favorites, setFavorites] = useState<Set<string>>(() => {
-    const stored = localStorage.getItem("favorites");
-    return stored ? new Set<string>(JSON.parse(stored)) : new Set<string>();
-  });
+  const { favorites, onToggleFavorite: handleToggleFavorite } = useFavorites();
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const favoritesJSON = JSON.stringify([...favorites]);
-    localStorage.setItem("favorites", favoritesJSON);
-  }, [favorites]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -34,16 +27,6 @@ function App() {
 
   if (isLoading) {
     return <p className="app__loading">Loading...</p>;
-  }
-
-  function handleToggleFavorite(id: string) {
-    const newSet = new Set(favorites);
-    if (newSet.has(id)) {
-      newSet.delete(id);
-    } else {
-      newSet.add(id);
-    }
-    setFavorites(newSet);
   }
 
   return (
